@@ -27,13 +27,13 @@ public class TuringCell {
     //Initializing random generator
     private Random randomGenerator = new Random();
     // Initialzing limits for our constrain method
-    private float maxConcentration = 1;
+    private float maxConcentration = 0.8f;
     private float minConcentration = 0;
 
     // Constructor method initializes chemical fields with random values as a default
     public TuringCell(){
 
-        // Initializing chemicals with random floats from 0 to 1
+        // Initializing chemicals with random floats from 0 to 0.8
         this.concentrationA = randomGenerator.nextFloat();
         this.concentrationB = randomGenerator.nextFloat();
         this.concentrationC = randomGenerator.nextFloat();
@@ -46,10 +46,10 @@ public class TuringCell {
     }
 
     // Constructor method initializes chemical fields with given values.
-    // Values must be floats between 0 and 1
+    // Values must be floats between 0 and 0.8
     public TuringCell(float a, float b, float c){
 
-        // If one of the concentrations is greater than 1 or less than 0 then
+        // If one of the concentrations is greater than 0.8 or less than 0 then
         // concentrations will be constrained!
         if ((a > 1 || b > 1 || c > 1) || (a < 0 || b < 0 || c < 0)){
             
@@ -77,16 +77,16 @@ public class TuringCell {
         this.gamma = 1;
     }
 
-    // This method resets all the concentrations to random floats from 0 to 1
+    // This method resets all the concentrations to random floats from 0 to 0.8
     public void reset(){
         this.concentrationA = randomGenerator.nextFloat();
         this.concentrationB = randomGenerator.nextFloat();
         this.concentrationC = randomGenerator.nextFloat();
     }
 
-    // This method returns a constrained value if it is not between 0 and 1.
+    // This method returns a constrained value if it is not between 0 and 0.8.
     // value < 0 returns 0
-    // value > 1 returns 1
+    // value > 0.8 returns 0.8
     private float limit(float value){
 
         // Constrain using min and max methods
@@ -126,10 +126,10 @@ public class TuringCell {
     }
 
     // This method sets the concentrations of the chemicals
-    // Must be a float with value between 0 and 1
+    // Must be a float with value between 0 and 0.8
     public void setConcentrations(float a, float b, float c){
 
-        // If one of the concentrations is not between 0 or 1 then constrain it
+        // If one of the concentrations is not between 0 or 0.8 then constrain it
         if ((a > 1 || b > 1 || c > 1) || (a < 0 || b < 0 || c < 0)){
             
             // Constraining chemicals not between 0 or 1
@@ -168,31 +168,31 @@ public class TuringCell {
     }
 
     // This method draws the cell. The color of the cell is set
-    // Using the HSB model which is why concentrations must be floats between 0 and 1
+    // Using the HSB model which is why concentrations must be floats between 0 and 0.8
     // Currently the color changes as a function of concentration A, but this 
     // can be changed to any concentration.
     public void draw(Graphics g, int x, int y, int scale){
 
         // Draw an oval representing a cell at position x,y, scaled by scale
-        g.drawOval(x, y, scale, scale);
+        g.drawRect(x, y, scale, scale);
 
         // Setting the color in accordance to concentration A
         // Using HSB model of color
-        Color cellColor = Color.getHSBColor(0f, 0f, this.concentrationA);
+        Color cellColor = Color.getHSBColor(1.0f, 0.9f, this.concentrationA);
         g.setColor(cellColor);
 
         // Fill oval object at x,y with current collor 
-        g.fillOval(x, y, scale, scale);
+        g.fillRect(x, y, scale, scale);
     }
 
     // This method returns an array with  the average concentration
     // of the neighboring cells including the current cell
     private float[] average(ArrayList<TuringCell> neighbors){
 
-        // Initializing variables for the total concentration of all the cells
-        float totalConcentrationA = this.concentrationA;
-        float totalConcentrationB = this.concentrationB;
-        float totalConcentrationC = this.concentrationC;
+        // Initializing variables for the total concentration of each chemical
+        float totalConcentrationA = 0;
+        float totalConcentrationB = 0;
+        float totalConcentrationC = 0;
 
         // Iterating over the neighbors
         for (int i = 0; i < neighbors.size(); i++){
@@ -226,7 +226,8 @@ public class TuringCell {
     }
 
     // This method calculates new concentrations based on the
-    // BZ reaction. It then outputs the new concentrations in an array of the form {A,B,C}
+    // BZ reaction. It then outputs the new concentrations in an array of the form {A,B,C}.
+    // The input is a neighbors ArrayList since it calls on the average method.
     private float[] BZ(ArrayList<TuringCell> neighbors){
 
         // Finds average concentrations by calling on the average method

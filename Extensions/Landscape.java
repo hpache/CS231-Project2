@@ -102,6 +102,31 @@ public class Landscape {
         return this.grid[row][col];
     }
 
+    // This method scans 2d array elements in a given row
+    // starting from the initial column and ending at the final column and outputs an arraylist
+    // containing the scanned elements. Implements warping since this method
+    // is exclusively for the getNeighbors method
+    private ArrayList<TuringCell> scanRow(int row, int initialColumn, int finalColumn){
+
+        // Initializing scanned arraylist
+        ArrayList<TuringCell> scannedElements = new ArrayList<TuringCell>();
+
+        // Iterate over the columns at [row] starting from initialColumn to finalColumn
+        for (int j = initialColumn; j <= finalColumn; j++){
+
+            // Calculating warped indices (Toroidal warping)
+            int warpedI = (row + this.numberRows) % this.numberRows;
+            int warpedJ = (j + this.numberColumns) % this.numberColumns;
+
+            // Getting cellElement at warped indices
+            TuringCell cellElement = this.grid[warpedI][warpedJ];
+
+            // Assigning it to the scannedElements ArrayList
+            scannedElements.add(cellElement);
+        }
+        return scannedElements;
+    }
+
     // Method returns an array list of the neighbors of the cell at the [row][col] position.
     // This method will use the Moore neighborhood in preparation for my extension :D
     // Also in preparation for my extension, I will treat the grid as a warped grid
@@ -116,52 +141,17 @@ public class Landscape {
         int initialColumn = col - 1; 
         int finalColumn = col + 1;
 
-        // Iterate over the neighbors on the top row
-        for (int j = initialColumn; j <= finalColumn; j++){
+        // Getting neighbors in the top row
+        ArrayList<TuringCell> topNeighbors = this.scanRow(topRow, initialColumn, finalColumn);
+        // Getting neighbors in the same row
+        ArrayList<TuringCell> sameRowNeighbors = this.scanRow(row, initialColumn, finalColumn);
+        //Getting neighbors in the lower row
+        ArrayList<TuringCell> lowNeighbors = this.scanRow(lowerRow, initialColumn, finalColumn);
 
-            // Implement grid warping by using mods!
-            int warpedI = (topRow + this.numberRows) % this.numberRows;
-            int warpedJ = (j + this.numberColumns) % this.numberColumns;
-            
-            // Picking neighbor cell
-            TuringCell neighbor = this.grid[warpedI][warpedJ];
-
-            // Adding neighbor to the arraylist
-            neighbors.add(neighbor);
-        }
-
-        // Iterate over the neighbors on the same row 
-        for (int j = initialColumn; j <= finalColumn; j++){
-
-            // check if j is the same as col so that we don't get the center cell
-            if (j != col){
-
-                // Grid warping
-                int warpedI = (row + this.numberRows) % this.numberRows;
-                int warpedJ = (j + this.numberColumns) % this.numberColumns;
-
-                // Picking the cell neighbor
-                TuringCell neighbor = this.grid[warpedI][warpedJ];
-
-                // Adding neighbor to arraylist
-                neighbors.add(neighbor);
-            }
-        }
-
-        // Iterate over the neighbors in the bottom row
-        for (int j = initialColumn; j <= finalColumn; j++){
-
-            // Grid warp
-            int warpedI = (lowerRow + this.numberRows) % this.numberRows;
-            int warpedJ = (j + this.numberColumns) % this.numberColumns;
-
-            // Picking cell neighbor
-            TuringCell neighbor = this.grid[warpedI][warpedJ];
-
-            // Adding neighbor to arraylist 
-            neighbors.add(neighbor);
-
-        }
+        // Adding all ArrayLists the neighbors ArrayList
+        neighbors.addAll(topNeighbors);
+        neighbors.addAll(sameRowNeighbors);
+        neighbors.addAll(lowNeighbors);
 
         return neighbors;
     }
@@ -202,8 +192,13 @@ public class Landscape {
                 // Get original concentrations
                 ArrayList<Float> originalConcentrations = originalCell.getConcentrations();
 
+                // Unpack concentrations to make the code easier to read
+                float alpha = originalConcentrations.get(0);
+                float beta = originalConcentrations.get(1);
+                float gamma = originalConcentrations.get(2);
+
                 // Set the cells status equal to the one in the ijth position of the original grid
-                tempCell.setConcentrations(originalConcentrations.get(0), originalConcentrations.get(1), originalConcentrations.get(2));
+                tempCell.setConcentrations(alpha,beta,gamma);
 
                 // Giving the temporary cell the same reaction parameters as the original cell
                 tempCell.setAlpha( originalCell.getAlpha() );
