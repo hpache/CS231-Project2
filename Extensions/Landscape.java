@@ -3,7 +3,7 @@
  * Project 2 Extension
  * Created 02/26/2021
  * This file is a modified version of the original Landscape class
- * I modified it so that it can work properly with the turingCell calss
+ * I modified it so that it can work properly with the TuringCell calss
  */
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Landscape {
 
     // Declaring 2d array that will hold our cells
-    private turingCell[][] grid;
+    private TuringCell[][] grid;
     // Declaring column and row fields
     private int numberRows;
     private int numberColumns;
@@ -27,14 +27,14 @@ public class Landscape {
         this.numberColumns = cols;
 
         // Allocating 2d array with given dimensions
-        this.grid = new turingCell[this.numberRows][this.numberColumns];
+        this.grid = new TuringCell[this.numberRows][this.numberColumns];
 
         // Fill our 2d array with cells
         for (int i = 0; i < numberRows; i++){
             for (int j = 0; j < numberColumns; j++){
 
                 // Create new cell object 
-                turingCell cellElement = new turingCell();
+                TuringCell cellElement = new TuringCell();
 
                 // ijth element of grid 2d array is assigned a cell object
                 this.grid[i][j] = cellElement;
@@ -51,14 +51,14 @@ public class Landscape {
         this.numberColumns = cols;
         
         // Allocating 2d array with given dimensions
-        this.grid = new turingCell[this.numberRows][this.numberColumns];
+        this.grid = new TuringCell[this.numberRows][this.numberColumns];
 
         // Fills grid with cells
         for (int i = 0; i < numberRows; i++){
             for (int j = 0; j < numberColumns; j++){
 
                 // Creating new cell object
-                turingCell cellElement = new turingCell();
+                TuringCell cellElement = new TuringCell();
                 
                 // Giving cellElement given reaction parameters
                 cellElement.setAlpha(alpha);
@@ -79,7 +79,7 @@ public class Landscape {
             for (int j = 0; j < this.numberColumns; j++){
 
                 // picking a cell element at the ijth index
-                turingCell cellElement = this.grid[i][j];
+                TuringCell cellElement = this.grid[i][j];
 
                 // Resetting that element
                 cellElement.reset();
@@ -98,17 +98,17 @@ public class Landscape {
     }
     
     // Method returns the cell at position [row][col]
-    public turingCell getCell(int row, int col){
+    public TuringCell getCell(int row, int col){
         return this.grid[row][col];
     }
 
     // Method returns an array list of the neighbors of the cell at the [row][col] position.
     // This method will use the Moore neighborhood in preparation for my extension :D
     // Also in preparation for my extension, I will treat the grid as a warped grid
-    public ArrayList<turingCell> getNeighbors(int row, int col){
+    public ArrayList<TuringCell> getNeighbors(int row, int col){
         
         // Initializing neighbors arraylist
-        ArrayList<turingCell> neighbors = new ArrayList<turingCell>();
+        ArrayList<TuringCell> neighbors = new ArrayList<TuringCell>();
 
         // Getting the rows and columns that contain the neighbors
         int topRow = row - 1;
@@ -124,7 +124,7 @@ public class Landscape {
             int warpedJ = (j + this.numberColumns) % this.numberColumns;
             
             // Picking neighbor cell
-            turingCell neighbor = this.grid[warpedI][warpedJ];
+            TuringCell neighbor = this.grid[warpedI][warpedJ];
 
             // Adding neighbor to the arraylist
             neighbors.add(neighbor);
@@ -141,7 +141,7 @@ public class Landscape {
                 int warpedJ = (j + this.numberColumns) % this.numberColumns;
 
                 // Picking the cell neighbor
-                turingCell neighbor = this.grid[warpedI][warpedJ];
+                TuringCell neighbor = this.grid[warpedI][warpedJ];
 
                 // Adding neighbor to arraylist
                 neighbors.add(neighbor);
@@ -156,7 +156,7 @@ public class Landscape {
             int warpedJ = (j + this.numberColumns) % this.numberColumns;
 
             // Picking cell neighbor
-            turingCell neighbor = this.grid[warpedI][warpedJ];
+            TuringCell neighbor = this.grid[warpedI][warpedJ];
 
             // Adding neighbor to arraylist 
             neighbors.add(neighbor);
@@ -174,7 +174,7 @@ public class Landscape {
             for (int j = 0; j < this.numberColumns; j++){
 
                 // Picking out our ijth cell
-                turingCell currentCell = this.grid[i][j];
+                TuringCell currentCell = this.grid[i][j];
                 
                 // Drawing our ijth cell
                 currentCell.draw(g, i * gridScale, j * gridScale, gridScale);
@@ -186,7 +186,7 @@ public class Landscape {
     public void advance(){
 
         // Make a clone of the grid array so we can work on it
-        turingCell[][] gridClone = new turingCell[this.numberRows][this.numberColumns];
+        TuringCell[][] gridClone = new TuringCell[this.numberRows][this.numberColumns];
 
         // Iterate over the original grid in order to copy its ijth element
         // Once we do that, we get the ijth's cell neighbor list and update it appropriately
@@ -195,9 +195,9 @@ public class Landscape {
             for (int j = 0; j < this.numberColumns; j++){
 
                 // Create a new cell object
-                turingCell tempCell = new turingCell();
+                TuringCell tempCell = new TuringCell();
                 // Get ijth cell from the original grid
-                turingCell originalCell = this.grid[i][j];
+                TuringCell originalCell = this.grid[i][j];
 
                 // Get original concentrations
                 ArrayList<Float> originalConcentrations = originalCell.getConcentrations();
@@ -214,7 +214,7 @@ public class Landscape {
                 gridClone[i][j] = tempCell;
 
                 // Get the neighbors of the ijth cell in the original grid
-                ArrayList<turingCell> neighbors = this.getNeighbors(i, j);
+                ArrayList<TuringCell> neighbors = this.getNeighbors(i, j);
 
                 // Update the ijth tempCell with the neighbors
                 tempCell.updateState(neighbors); 
@@ -251,11 +251,11 @@ public class Landscape {
         System.out.println(grid1);
 
         // Picking inidivual cell to focus on
-        turingCell cell1 = grid1.getCell(2, 3);
+        TuringCell cell1 = grid1.getCell(2, 3);
         System.out.println(cell1);
 
         // Getting neighbors of cell1
-        ArrayList<turingCell> neighbors = grid1.getNeighbors(2, 3);
+        ArrayList<TuringCell> neighbors = grid1.getNeighbors(2, 3);
         System.out.println(neighbors);
 
         // Advance the grid

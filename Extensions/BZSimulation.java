@@ -10,7 +10,7 @@ public class BZSimulation {
 
             // Simulating 50 iterations, a pattern should appear at the 20th iteration
             for (int i = 0; i < 50; i++){
-                display1.saveImage( "data/BZ_frame_" + String.format( "%03d", i ) + ".png" );
+                //display1.saveImage( "data/BZ_frame_" + String.format( "%03d", i ) + ".png" );
                 grid.advance();
                 display1.repaint();
                 try {
@@ -37,7 +37,7 @@ public class BZSimulation {
 
             // Simulating 60 iterations, just in case some patterns take longer to appear
             for (int i = 0; i < 60; i++){
-                display1.saveImage( "data/BZ_frame_" + String.format( "%03d",i ) + ".png");
+                //display1.saveImage( "data/BZ_frame_" + String.format( "%03d",i ) + ".png");
                 grid.advance();
                 display1.repaint();
                 try{
