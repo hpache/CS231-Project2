@@ -263,10 +263,9 @@ public class TuringCell {
 
     public String toString(){
 
-        // The cell will be represented in string format as a tuple containing 
-        // concentrations of chemical A, B, C in that order
-        String output = "(%s, %s, %s)";
-        output = String.format(output, this.concentrationA, this.concentrationB, this.concentrationC);
+        // The cell will be represented in string format as the concentration of chemical A
+        String output = "%s";
+        output = String.format(output, this.concentrationA);
 
         return output;
     }

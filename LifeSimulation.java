@@ -28,7 +28,7 @@ public class LifeSimulation {
 
         LandscapeDisplay display1 = new LandscapeDisplay(scape, 8);
 
-        // Simulating 1000 generations
+        // Simulating 300 generations
         for (int i = 0; i < 300; i++){
             display1.saveImage( "data/life_frame_" + String.format( "%03d", i ) + ".png" );
             scape.advance();

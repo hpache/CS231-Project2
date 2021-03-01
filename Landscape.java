@@ -208,13 +208,13 @@ public class Landscape {
     public static void main(String[] args) {
         
         // Setting up a 4x4 grid since it is easier to check
-        Landscape test1 = new Landscape(10,10);
+        Landscape test1 = new Landscape(4,4);
         
         // Grid should all be 0's
         System.out.println(test1);
 
         // Get list of neighbors of cell at 0,3
-        ArrayList<Cell> neighborsTest = test1.getNeighbors(2, 2);
+        ArrayList<Cell> neighborsTest = test1.getNeighbors(0, 3);
 
         // Setting those neighbors to 1s to check if they correctly warped
         for (int i = 0; i < neighborsTest.size(); i++){
@@ -231,7 +231,7 @@ public class Landscape {
         System.out.println(test1);
 
         // Draw Landscape. Look below for a reference
-        LandscapeDisplay display1 = new LandscapeDisplay(test1,80);
+        LandscapeDisplay display1 = new LandscapeDisplay(test1,20);
     }
 
  

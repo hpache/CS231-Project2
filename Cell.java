@@ -15,7 +15,7 @@ public class Cell {
     // Declaring the boolean that has the life state of the cell
     private Boolean state;
 
-    // Constructor without an argument, this initializes a cell object with default state as dead (false)
+    // Constructor, this initializes a cell object with default state as dead (false)
     public Cell(){
         this.state = false;
     }
